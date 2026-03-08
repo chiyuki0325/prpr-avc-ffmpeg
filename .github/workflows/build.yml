@@ -61,6 +61,17 @@ jobs:
           xcrun --sdk iphoneos --show-sdk-path
           xcrun --sdk iphonesimulator --show-sdk-path
 
+      - name: Setup OpenHarmony SDK
+        if: contains(matrix.target, 'ohos')
+        uses: openharmony-rs/setup-ohos-sdk@v0.2
+        with:
+          version: '6.0'
+          components: 'native'
+
+      - name: Set OHOS_SDK env
+        if: contains(matrix.target, 'ohos')
+        run: echo "OHOS_SDK=$OHOS_BASE_SDK_HOME" >> "$GITHUB_ENV"
+
       - name: Build FFmpeg
         run: python3 scripts/build-ffmpeg.py ${{ matrix.target }}
       - name: Upload artifact
