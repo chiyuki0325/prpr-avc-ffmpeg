@@ -2,8 +2,15 @@
 name = "x86_64-unknown-linux-gnu"
 os = "ubuntu-latest"
 enabled = true
-env = { CC = "gcc", CXX = "g++" }
-configure = ["--arch=x86_64", "--target-os=linux", "--cc=gcc", "--cxx=g++", "--ld=gcc"]
+env = { CC = "gcc", CXX = "g++", LD = "gcc", AS = "as" }
+configure = [
+  "--arch=x86_64",
+  "--target-os=linux",
+  "--cc=gcc",
+  "--cxx=g++",
+  "--ld=gcc",
+  "--as=as",
+]
 extra_cflags = ""
 extra_ldflags = ""
 
@@ -21,27 +28,37 @@ name = "aarch64-apple-ios"
 os = "macos-latest"
 enabled = true
 note = "Requires Xcode and iOS SDK."
-env = { CC = "xcrun -sdk iphoneos clang", CXX = "xcrun -sdk iphoneos clang++" }
+env = { CC = "xcrun -sdk iphoneos clang", CXX = "xcrun -sdk iphoneos clang++", IOS_SDK = "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk" }
 configure = ["--arch=arm64", "--target-os=darwin", "--enable-cross-compile"]
-extra_configure = ["--disable-libvorbis", "--disable-decoder=libvorbis"]
-extra_cflags = "-miphoneos-version-min=9.0"
-extra_ldflags = "-miphoneos-version-min=9.0"
+extra_configure = [
+  "--disable-libvorbis",
+  "--disable-decoder=libvorbis",
+  "--disable-videotoolbox",
+  "--sysroot=${IOS_SDK}",
+]
+extra_cflags = "-isysroot ${IOS_SDK} -miphoneos-version-min=9.0"
+extra_ldflags = "-isysroot ${IOS_SDK} -miphoneos-version-min=9.0"
 
 [[targets]]
 name = "aarch64-apple-ios-sim"
 os = "macos-latest"
 enabled = true
 note = "Requires Xcode and iOS simulator SDK."
-env = { CC = "xcrun -sdk iphonesimulator clang", CXX = "xcrun -sdk iphonesimulator clang++" }
+env = { CC = "xcrun -sdk iphonesimulator clang", CXX = "xcrun -sdk iphonesimulator clang++", IOS_SIM_SDK = "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator.sdk" }
 configure = [
   "--arch=arm64",
   "--target-os=darwin",
   "--enable-cross-compile",
   "--disable-videotoolbox",
 ]
-extra_configure = ["--disable-libvorbis", "--disable-decoder=libvorbis"]
-extra_cflags = "-mios-simulator-version-min=9.0"
-extra_ldflags = "-mios-simulator-version-min=9.0"
+extra_configure = [
+  "--disable-libvorbis",
+  "--disable-decoder=libvorbis",
+  "--disable-videotoolbox",
+  "--sysroot=${IOS_SIM_SDK}",
+]
+extra_cflags = "-isysroot ${IOS_SIM_SDK} -mios-simulator-version-min=9.0"
+extra_ldflags = "-isysroot ${IOS_SIM_SDK} -mios-simulator-version-min=9.0"
 
 [[targets]]
 name = "aarch64-unknown-linux-ohos"

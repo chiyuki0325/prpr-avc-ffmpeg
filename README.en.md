@@ -50,4 +50,5 @@ Some platforms (for example Windows MSVC) output `.lib`. You can override the de
 - macOS targets need `brew install pkg-config libvorbis`
 - macOS/iOS targets require Xcode (Command Line Tools) with `xcrun` available
 - iOS targets disable `libvorbis` by default (built-in Vorbis decoder only); enable it only if you provide an iOS libvorbis build
+- iOS targets use Xcode SDK paths by default; update `IOS_SDK` / `IOS_SIM_SDK` if needed
 - HarmonyOS targets require the OpenHarmony SDK; set `OHOS_SDK` if needed
