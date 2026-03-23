@@ -109,24 +109,50 @@ os = "windows-latest"
 enabled = false
 note = "Requires MSVC toolchain and FFmpeg msvc flags."
 configure = ["--arch=x86_64", "--target-os=win64", "--toolchain=msvc"]
-package_libs = ["avcodec.lib", "avformat.lib", "avutil.lib", "swresample.lib", "swscale.lib"]
+package_libs = [
+  "avcodec.lib",
+  "avformat.lib",
+  "avutil.lib",
+  "swresample.lib",
+  "swscale.lib",
+]
 extra_cflags = ""
 extra_ldflags = ""
 
 [[targets]]
 name = "aarch64-linux-android"
 os = "ubuntu-latest"
-enabled = false
+enabled = true
 note = "Requires Android NDK and API level configuration."
-configure = ["--arch=arm64", "--target-os=android", "--enable-cross-compile"]
+configure = [
+  "--arch=arm64",
+  "--target-os=android",
+  "--enable-cross-compile",
+  "--disable-libvorbis",
+  "--disable-decoder=libvorbis",
+  "--cc=${ANDROID_NDK_HOME}/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android21-clang",
+  "--cxx=${ANDROID_NDK_HOME}/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android21-clang++",
+  "--ar=${ANDROID_NDK_HOME}/toolchains/llvm/prebuilt/linux-x86_64/bin/llvm-ar",
+  "--ranlib=${ANDROID_NDK_HOME}/toolchains/llvm/prebuilt/linux-x86_64/bin/llvm-ranlib",
+]
 extra_cflags = ""
 extra_ldflags = ""
 
 [[targets]]
 name = "armv7-linux-androideabi"
 os = "ubuntu-latest"
-enabled = false
+enabled = true
 note = "Requires Android NDK and API level configuration."
-configure = ["--arch=armv7", "--target-os=android", "--enable-cross-compile"]
+configure = [
+  "--arch=armv7",
+  "--target-os=android",
+  "--enable-cross-compile",
+  "--disable-libvorbis",
+  "--disable-decoder=libvorbis",
+  "--cc=${ANDROID_NDK_HOME}/toolchains/llvm/prebuilt/linux-x86_64/bin/armv7a-linux-androideabi21-clang",
+  "--cxx=${ANDROID_NDK_HOME}/toolchains/llvm/prebuilt/linux-x86_64/bin/armv7a-linux-androideabi21-clang++",
+  "--ar=${ANDROID_NDK_HOME}/toolchains/llvm/prebuilt/linux-x86_64/bin/llvm-ar",
+  "--ranlib=${ANDROID_NDK_HOME}/toolchains/llvm/prebuilt/linux-x86_64/bin/llvm-ranlib",
+]
 extra_cflags = ""
 extra_ldflags = ""
