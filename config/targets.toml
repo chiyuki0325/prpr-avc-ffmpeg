@@ -30,12 +30,7 @@ enabled = true
 note = "Requires Xcode and iOS SDK."
 env = { CC = "xcrun -sdk iphoneos clang", CXX = "xcrun -sdk iphoneos clang++", IOS_SDK = "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk" }
 configure = ["--arch=arm64", "--target-os=darwin", "--enable-cross-compile"]
-extra_configure = [
-  "--disable-libvorbis",
-  "--disable-decoder=libvorbis",
-  "--disable-videotoolbox",
-  "--sysroot=${IOS_SDK}",
-]
+extra_configure = ["--disable-videotoolbox", "--sysroot=${IOS_SDK}"]
 extra_cflags = "-isysroot ${IOS_SDK} -miphoneos-version-min=9.0"
 extra_ldflags = "-isysroot ${IOS_SDK} -miphoneos-version-min=9.0"
 
@@ -51,12 +46,7 @@ configure = [
   "--enable-cross-compile",
   "--disable-videotoolbox",
 ]
-extra_configure = [
-  "--disable-libvorbis",
-  "--disable-decoder=libvorbis",
-  "--disable-videotoolbox",
-  "--sysroot=${IOS_SIM_SDK}",
-]
+extra_configure = ["--disable-videotoolbox", "--sysroot=${IOS_SIM_SDK}"]
 extra_cflags = "-isysroot ${IOS_SIM_SDK} -mios-simulator-version-min=9.0"
 extra_ldflags = "-isysroot ${IOS_SIM_SDK} -mios-simulator-version-min=9.0"
 
@@ -77,8 +67,6 @@ configure = [
   "--disable-asm",
   "--disable-x86asm",
   "--disable-stripping",
-  "--disable-libvorbis",
-  "--disable-decoder=libvorbis",
   "--cc=${OHOS_SDK}/native/llvm/bin/clang",
   "--ld=${OHOS_SDK}/native/llvm/bin/clang",
   "--ar=${OHOS_SDK}/native/llvm/bin/llvm-ar",
@@ -128,8 +116,6 @@ configure = [
   "--arch=arm64",
   "--target-os=android",
   "--enable-cross-compile",
-  "--disable-libvorbis",
-  "--disable-decoder=libvorbis",
   "--cc=${ANDROID_NDK_HOME}/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android21-clang",
   "--cxx=${ANDROID_NDK_HOME}/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android21-clang++",
   "--ar=${ANDROID_NDK_HOME}/toolchains/llvm/prebuilt/linux-x86_64/bin/llvm-ar",
@@ -147,8 +133,6 @@ configure = [
   "--arch=armv7",
   "--target-os=android",
   "--enable-cross-compile",
-  "--disable-libvorbis",
-  "--disable-decoder=libvorbis",
   "--cc=${ANDROID_NDK_HOME}/toolchains/llvm/prebuilt/linux-x86_64/bin/armv7a-linux-androideabi21-clang",
   "--cxx=${ANDROID_NDK_HOME}/toolchains/llvm/prebuilt/linux-x86_64/bin/armv7a-linux-androideabi21-clang++",
   "--ar=${ANDROID_NDK_HOME}/toolchains/llvm/prebuilt/linux-x86_64/bin/llvm-ar",
