@@ -92,7 +92,7 @@ extra_ldflags = ""
 [[targets]]
 name = "x86_64-pc-windows-gnu"
 os = "ubuntu-latest"
-enabled = false
+enabled = true
 note = "Requires mingw-w64 toolchain and cross-prefix."
 configure = [
   "--arch=x86_64",
