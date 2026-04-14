@@ -51,10 +51,28 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y nasm yasm libvorbis-dev pkg-config mingw-w64
+          sudo apt-get install -y crossbuild-essential-arm64
 
       - name: Install musl tools
         if: runner.os == 'Linux' && contains(matrix.target, 'musl')
         run: sudo apt-get install -y musl-tools
+
+      - name: Setup musl tools (aarch64 cross)
+        if: runner.os == 'Linux' && contains(matrix.target, 'musl') && contains(matrix.target, 'aarch64')
+        run: |
+          ZIG_VERSION=0.14.0
+          curl -L "https://ziglang.org/download/${ZIG_VERSION}/zig-linux-x86_64-${ZIG_VERSION}.tar.xz" | tar -xJC /tmp
+          echo "/tmp/zig-linux-x86_64-${ZIG_VERSION}" >> "$GITHUB_PATH"
+          for tool in gcc g++ as; do
+            if [ "$tool" = "g++" ]; then
+              cmd="c++"
+            else
+              cmd="cc"
+            fi
+            printf '#!/bin/sh\nexec zig %s -target aarch64-linux-musl "$@"\n' "$cmd" \
+              | sudo tee /usr/local/bin/aarch64-linux-musl-${tool} > /dev/null
+            sudo chmod +x /usr/local/bin/aarch64-linux-musl-${tool}
+          done
 
       - name: Install build deps (macos)
         if: runner.os == 'macOS'
@@ -74,6 +92,12 @@ jobs:
           update: true
           install: make pkg-config diffutils yasm perl gawk
           path-type: inherit
+
+      - name: Install gas-preprocessor for ARM64 Linux
+        if: runner.os == 'Linux' && contains(matrix.target, 'aarch64')
+        run: |
+          sudo curl -L https://raw.githubusercontent.com/FFmpeg/gas-preprocessor/master/gas-preprocessor.pl -o /usr/local/bin/gas-preprocessor.pl
+          sudo chmod +x /usr/local/bin/gas-preprocessor.pl
 
       - name: Install gas-preprocessor for ARM64 MSVC
         if: runner.os == 'Windows' && contains(matrix.target, 'aarch64') && contains(matrix.target, 'msvc')
